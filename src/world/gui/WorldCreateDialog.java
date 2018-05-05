@@ -1,28 +1,37 @@
-package world;
+package world.gui;
+
+import world.Game;
+import world.Point;
+import world.WorldGrid;
+import world.WorldHex;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 
-public class WorldCreateFrame extends JFrame implements ActionListener {
+public class WorldCreateDialog extends JDialog implements ActionListener {
 
+   Game game;
+   private Point dim;
    private JRadioButton hex;
    private JRadioButton square;
    private JTextField height;
    private JTextField width;
 
 
-    WorldCreateFrame() {
-        super("Create your world");
+     WorldCreateDialog(Window owner, Game g) {
+        super(owner,"Create your world",ModalityType.DOCUMENT_MODAL);
+         game=g;
         setSize(400, 120);
         setLayout(new java.awt.FlowLayout());
         JLabel question = new JLabel("Board should have : ");
+        JLabel heightlabel = new JLabel("height");
+        JLabel widthlabel = new JLabel(" width");
         hex = new JRadioButton("Hexagonal Grid");
         square = new JRadioButton("Square Grid");
-        JLabel heightlabel = new JLabel("height");
         height = new JTextField(5);
-        JLabel widthlabel = new JLabel(" width");
         width = new JTextField(5);
         JButton ok = new JButton("Ok");
         ButtonGroup buttonGroup = new ButtonGroup();
@@ -44,17 +53,17 @@ public class WorldCreateFrame extends JFrame implements ActionListener {
         setVisible(true);
     }
 
-World Create_world(Point dim,boolean hex)
+private void createWorld(Point dim,boolean hex)
 {
-if(hex)return new WorldHex(dim);
-else return new WorldGrid(dim);
+if(hex)game.setWorld(new WorldHex(dim));
+else game.setWorld(new WorldGrid(dim));
 }
 
     @Override
     public void actionPerformed(ActionEvent actionEvent) {
         if(actionEvent.getActionCommand().equals("Ok"))
         {
-            Point dim=new Point();
+            dim=new Point();
             try {
                 dim.x = Integer.parseInt(width.getText());
                 dim.y = Integer.parseInt(height.getText());
@@ -67,9 +76,9 @@ else return new WorldGrid(dim);
             }
             if(dim.x>0 && dim.y>0 && (hex.isSelected() || square.isSelected()))
             {
-                if(hex.isSelected())Create_world(dim,true);
-                else Create_world(dim,false);
-                 setVisible(false);
+                if(hex.isSelected())createWorld(dim,true);
+                else createWorld(dim,false);
+                dispose();
 
             }
         }

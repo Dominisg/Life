@@ -1,10 +1,13 @@
 package world;
 
+import java.awt.*;
+
 public abstract class Organism {
-    int strenght;
-    int initiative;
-    Point cords;
-    World world;
+    protected int strenght;
+    protected int initiative;
+    protected Point cords;
+    protected World world;
+    protected Image image;
 
     public Organism(Point cord, World where, int str, int ini) {
         strenght = str;
@@ -13,26 +16,33 @@ public abstract class Organism {
         cords = cord;
     }
 
-   public int GetStrenght() {
+   public int getStrenght() {
         return strenght;
     }
 
-    public void SetStrenght(int str) {
+    public void setStrenght(int str) {
         strenght = str;
     }
 
-    public int GetInitiative() {
+    public int getInitiative() {
         return initiative;
     }
 
-    public Point GetCords() {
+    public Point getCords() {
         return cords;
     }
 
 
-        public abstract void Action ();
-        public abstract boolean Will_it_fend (Organism attacker);
-        public abstract boolean Will_it_escape ();
-        public abstract void Draw ();
+        public abstract void action ();
+        public abstract boolean willItFend(Organism attacker);
+        public abstract boolean willItEscape();
+
+
+        public void draw (Graphics g)
+        {
+
+            g.drawImage(image, cords.x * world.getFieldsize().x, cords.y * world.getFieldsize().y, world.getGamescreen());
+
+        }
 
 }

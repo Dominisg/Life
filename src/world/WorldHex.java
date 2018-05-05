@@ -3,8 +3,7 @@ package world;
 public class WorldHex extends World{
 
 
-    WorldHex(Point dim){
+    public WorldHex(Point dim){
         super(dim);
     }
-    public void Draw(){};
 }
