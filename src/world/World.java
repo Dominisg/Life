@@ -1,7 +1,6 @@
 package world;
-
-
 import world.gui.GameScreen;
+import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
 import java.util.Vector;
@@ -10,11 +9,13 @@ import java.util.Vector;
 
      final private Point screensize = new Point(600,800);
      private Organism[][] map;
-     private Point dimensions;
+     protected Point dimensions;
      private GameScreen gamescreen;
      private Vector<Organism> organisms = new Vector<>();
-     private Deque<Organism> created_list;
-     private Deque<Organism> destroy_list;
+     private ArrayDeque<Organism> created_list = new ArrayDeque<Organism>();
+     private ArrayDeque<Organism> destroy_list =new ArrayDeque<Organism>();
+
+     public abstract boolean createInNeighbour(Point point, Class type);
 
      
      
@@ -27,15 +28,24 @@ import java.util.Vector;
      {
          return organisms;
      }
-    public Deque <Organism> getRecentlyCreatedOrganisms()
+    public Deque<Organism> getRecentlyCreatedOrganisms()
      {
          return created_list;
      }
 
      void createStartingBoard()
      {
+        createOrganism(world.animals.Wolf.class);
         createOrganism(world.animals.Sheep.class);
-        createOrganism(world.plants.Grass.class);
+        createOrganism(world.animals.Sheep.class);
+        createOrganism(world.animals.Turtle.class);
+        createOrganism(world.animals.Antelope.class);
+
+         //createOrganism(world.plants.Guarana.class);
+        createOrganism(world.plants.Hogweed.class);
+        //reateOrganism(world.plants.Grass.class);
+       // createOrganism(world.plants.Deadlyshade.class);
+        createOrganism(world.plants.Dendelion.class);
      }
 
      void performRound()
@@ -45,6 +55,7 @@ import java.util.Vector;
              if(checkIfAlive(organism))organism.action();
          }
          destroyOrganisms();
+         addCreatedOrganism();
          gamescreen.repaint();
      }
 
@@ -99,30 +110,36 @@ import java.util.Vector;
 
      public void takeFromBoard(Organism organism) {
          Point cords = organism.getCords();
-         if (map[cords.x][cords.y] == organism) map[cords.x][cords.y] = null;
+         if (map[cords.x][cords.y].equals(organism)) map[cords.x][cords.y] = null;
      }
 
 
      void destroyOrganisms() {
+         boolean found = false;
          while (destroy_list.size() > 0) {
              for (int i = 0; i < organisms.size(); ++i) {
-                 if (organisms.get(i) == destroy_list.getLast()) {
+                 if (organisms.get(i).equals(destroy_list.getLast())) {
                      organisms.remove(i);
+                     found=true;
+                     break;
                  }
              }
-             for (Organism organism : created_list) {
-                 if (organism == destroy_list.getLast()) {
-                     created_list.remove(organism);
-                 }
-             }//czy nie można szybciej?
-
+             if(!found) {
+                 for (Organism organism : created_list) {
+                     if (organism.equals(destroy_list.getLast())) {
+                         created_list.remove(organism);
+                     }
+                 }//czy nie można szybciej?
+             }
+             found=false;
              destroy_list.removeLast();
          }
      }
 
      public boolean checkIfAlive(Organism target) {
+
          for (Organism organism : destroy_list) {
-             if (target == organism) return false;
+             if (target.equals(organism)) return false;
          }
          return true;
      }
@@ -134,10 +151,35 @@ import java.util.Vector;
              if(type == world.animals.Sheep.class) {
                  return new world.animals.Sheep(cords, this);
              }
-
+             if(type == world.animals.Wolf.class) {
+                 return new world.animals.Wolf(cords, this);
+             }
+             if(type == world.animals.Turtle.class) {
+                 return new world.animals.Turtle(cords, this);
+             }
+             if(type == world.animals.Antelope.class) {
+                 return new world.animals.Antelope(cords, this);
+             }
              if(type == world.plants.Grass.class) {
                  return new world.plants.Grass(cords, this);
              }
+             if(type == world.plants.Dendelion.class)
+             {
+                 return new world.plants.Dendelion(cords,this);
+             }
+             if(type == world.plants.Guarana.class)
+             {
+                 return new world.plants.Guarana(cords,this);
+             }
+             if(type == world.plants.Deadlyshade.class)
+             {
+                 return new world.plants.Deadlyshade(cords,this);
+             }
+             if(type == world.plants.Hogweed.class)
+             {
+                 return new world.plants.Hogweed(cords,this);
+             }
+
          }
          catch(Exception ex) {
             System.out.println(ex);
@@ -166,5 +208,28 @@ import java.util.Vector;
             tmp.y = (gen.nextInt()&Integer.MAX_VALUE)%dimensions.y;
         }while(isThere(tmp)!=null);
         createOrganism(type,tmp);
+    }
+
+    public void removeOrganism(Organism target)
+    {
+        Point tmp = target.getCords();
+        if(map[tmp.x][tmp.y]==target)map[tmp.x][tmp.y]=null;
+        for (int i=0;i<organisms.size();++i)
+        {
+         if(organisms.get(i)==target)
+         {
+             destroy_list.push(target);
+             return;
+         }
+        }
+        for (Organism organism : created_list)
+        {
+            if(organism==target)
+            {
+                destroy_list.push(target);
+                return;
+            }
+        }
+
     }
  }

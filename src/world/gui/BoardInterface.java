@@ -23,6 +23,12 @@ public class BoardInterface extends JPanel {
         windowsize.y-=200;
     }
 
+    @Override
+    public java.awt.Dimension getPreferredSize() {
+        return new java.awt.Dimension(600, 600);
+    }
+
+    @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 

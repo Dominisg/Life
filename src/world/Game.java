@@ -5,6 +5,7 @@ import world.gui.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Queue;
 
 public class Game implements ActionListener {
     private World world;
@@ -15,10 +16,6 @@ public class Game implements ActionListener {
     }
     public World getWorld(){return world;}
 
-   public void startGame()
-    {
-
-    }
 
     public Game() {
 
@@ -31,6 +28,10 @@ public class Game implements ActionListener {
     
     public void actionPerformed(ActionEvent ae)
     {
+        if(ae.getActionCommand().equals("Next turn"))
+        {
+            world.performRound();
+        }
         
     }
 

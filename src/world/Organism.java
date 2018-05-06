@@ -1,6 +1,7 @@
 package world;
 
 import java.awt.*;
+import java.util.Random;
 
 public abstract class Organism {
     protected int strenght;
@@ -8,6 +9,7 @@ public abstract class Organism {
     protected Point cords;
     protected World world;
     protected Image image;
+    final protected Random gen = new Random();
 
     public Organism(Point cord, World where, int str, int ini) {
         strenght = str;

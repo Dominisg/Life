@@ -8,7 +8,7 @@ import java.util.Random;
 public enum Direction {
     RIGHT(1,0),LEFT(-1,0),UP(0,-1),DOWN(0,1);
 
-    private Point translation;
+    private Point translation = new Point();
 
     private static final List<Direction> VALUES = Collections.unmodifiableList(Arrays.asList(values()));
     private static final Random gen = new Random();
