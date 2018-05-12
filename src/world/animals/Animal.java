@@ -23,9 +23,8 @@ public abstract class Animal extends Organism {
         Direction dir;
         do {
             dir = Direction.randomDirection();
-
         } while (!willBeIn(dir));
-        //commentator
+        world.getCommentator().commentMovement(this,dir);
         Organism collision_target = move(dir);
         if (collision_target != null) Collision(collision_target,last_cords);
         if (world.checkIfAlive(this)) world.setOnBoard(this);
@@ -45,8 +44,7 @@ public abstract class Animal extends Organism {
         world.Point tmp= new Point(cords);
 
         dir.translate(tmp);
-        if(tmp.x >= world.getDimensions().x || tmp.y >= world.getDimensions().y || tmp.x<0 || tmp.y<0)return false;
-        return true;
+        return tmp.x < world.getDimensions().x && tmp.y < world.getDimensions().y && tmp.x >= 0 && tmp.y >= 0;
 
     }
 
@@ -70,12 +68,13 @@ public abstract class Animal extends Organism {
         }
         else
         {
+            world.getCommentator().commentEating(collision_target,this);
             ((world.plants.Plant)collision_target).beEaten(this);
         }
 
     }
 
-    private void goBack(Point lats_cords)
+    protected void goBack(Point lats_cords)
     {
         cords.x=lats_cords.x;
         cords.y=lats_cords.y;
@@ -84,17 +83,17 @@ public abstract class Animal extends Organism {
     void fight(Organism collision_target)
     {
         if(collision_target.willItEscape())return;
-        //comentator
+        world.getCommentator().commentFight(this,collision_target);
         if(strenght>=collision_target.getStrenght())
         {
             world.removeOrganism(collision_target);
-            //commentator
+            world.getCommentator().commentFightResult(this,true);
         }
         else
         {
             world.removeOrganism(this);
             if(world.checkIfAlive(collision_target))world.setOnBoard(collision_target);
-            //commentator
+            world.getCommentator().commentFightResult(this,false);
         }
     }
 
@@ -103,15 +102,17 @@ public abstract class Animal extends Organism {
     {
         if(world.createInNeighbour(partner.getCords(),this.getClass()))
         {
-            //commentator
+            world.getCommentator().commentProliferation(this,partner,true);
             return;
         }
         if (world.createInNeighbour(cords, this.getClass()))
         {
-            //commantator
+            world.getCommentator().commentProliferation(this,partner,true);
+
             return;
         }
-        // comentator
+        world.getCommentator().commentProliferation(this,partner,false);
+
     }
 
 }

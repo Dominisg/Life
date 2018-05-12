@@ -9,7 +9,8 @@ public abstract class Plant extends Organism {
     Plant(world.Point cord, world.World where, int str, int ini){super(cord,where,str,ini);}
     public void action() {
         spread();
-    };
+    }
+
     public boolean willItFend (Organism attacker){return false;}
     public boolean willItEscape (){return false;}
     public void beEaten(Organism organism) {
@@ -19,11 +20,11 @@ public abstract class Plant extends Organism {
     {
         if(((gen.nextInt()&Integer.MAX_VALUE) % 100 +1)<= probability)
         {
-            if(world.createInNeighbour(cords,getClass()))
-            {
-                //comment
+            if( world.createInNeighbour(cords, getClass())){
+                world.getCommentator().commentSpreading(this);
                 return true;
             }
+
         }
         return false;
     }

@@ -51,7 +51,7 @@ public class Hogweed extends Plant{
         if((ref = world.isThere(tmp))!=null){
             if(ref instanceof Animal) {
                 world.removeOrganism(ref);
-                //commentator
+                world.getCommentator().commentKilling(this,ref);
             }
         }
 

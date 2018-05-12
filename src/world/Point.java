@@ -16,5 +16,10 @@ public class Point {
         this.y = y;
     }
 
-    public Point(){};
+    public Point(){}
+
+    @Override
+    public String toString() {
+        return this.x +" "+  this.y;
+    }
 }

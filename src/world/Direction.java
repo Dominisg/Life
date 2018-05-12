@@ -26,6 +26,11 @@ public enum Direction {
             point.y +=translation.y;
     }
 
+    public static Direction getDir(int i)
+    {
+        return VALUES.get(i);
+    }
+
     public static Direction randomDirection()
     {
         return VALUES.get(gen.nextInt(VALUES.size()));

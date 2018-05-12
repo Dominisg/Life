@@ -3,6 +3,7 @@ package world.animals;
 import world.Direction;
 import world.Organism;
 import world.Point;
+import world.WorldGrid;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -27,7 +28,6 @@ public class Antelope extends Animal {
         Point last_cords = new Point(cords);
         Direction dir;
 
-
         do {
             dir = Direction.randomDirection();
         } while(!willBeIn(dir));
@@ -36,14 +36,14 @@ public class Antelope extends Animal {
             dir = Direction.randomDirection();
         } while(!willBeIn(dir));
         Organism collision_target = move(dir);
-        if(cords==last_cords)
+        if(cords.x==last_cords.x && cords.y == last_cords.y)
         {
             world.setOnBoard(this);
             action();
         }
         else
         {
-            //comment
+            world.getCommentator().commentJumping(this,cords);
             if(collision_target!=null) Collision(collision_target,last_cords);
             if(world.checkIfAlive(this))world.setOnBoard(this);
         }
@@ -51,16 +51,41 @@ public class Antelope extends Animal {
 
     }
 
-//    @Override
-//    public boolean willItEscape() {
-//        Point tmp = new Point(cords);
-//        if(gen.nextBoolean())
-//        {
-//            if(willBeIn(Direction.RIGHT)
-//            {
-//                if(!super.move(dir))
-//            }
-//        }
-//    }
-}
+    @Override
+    public boolean willItEscape() {
+        Point tmp = new Point(cords);
+        if(world instanceof WorldGrid) {
+            world.takeFromBoard(this);
+            if (gen.nextBoolean()) {
+                if (willBeIn(Direction.RIGHT)) {
+                    if (move(Direction.RIGHT) == null) {
+                        world.setOnBoard(this);
+                        return true;
+                    } else goBack(tmp);
+                }
+                if (willBeIn(Direction.LEFT)) {
+                    if (move(Direction.LEFT) == null) {
+                        world.setOnBoard(this);
+                        return true;
+                    } else goBack(tmp);
+                }
+                if (willBeIn(Direction.UP)) {
+                    if (move(Direction.UP) == null) {
+                        world.setOnBoard(this);
+                        return true;
+                    } else goBack(tmp);
+                }
+                if (willBeIn(Direction.DOWN)) {
+                    if (move(Direction.DOWN) == null) {
+                        world.setOnBoard(this);
+                        return true;
+                    } else goBack(tmp);
+                }
+                world.setOnBoard(this);
+            }
+        }
+        return false;
+
+    //TODO: Check
+}}
 

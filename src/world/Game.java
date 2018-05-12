@@ -1,15 +1,13 @@
 package world;
-
 import world.gui.*;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Queue;
 
 public class Game implements ActionListener {
     private World world;
-
+    GameScreen gs;
     public void setWorld(World w)
     {
         world=w;
@@ -18,21 +16,35 @@ public class Game implements ActionListener {
 
 
     public Game() {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
 
-        GameScreen gs =new GameScreen(this,new Point(600,800));
-        world.setGamescreen(gs);
-        world.createStartingBoard();
-        gs.repaint();
+                gs = new GameScreen(Game.this, new Point(600, 800));
+                world.setGamescreen(gs);
+                world.setCommentator(new Commentator(gs.getLog()));
+                world.createStartingBoard();
+                gs.repaint();
+            }
+        });
     }
 
-    
+
     public void actionPerformed(ActionEvent ae)
     {
-        if(ae.getActionCommand().equals("Next turn"))
-        {
-            world.performRound();
+        switch(ae.getActionCommand()) {
+            case "Next turn":
+                world.performRound();
+                break;
+            case "Save":
+                world.save();
+                break;
+            case "Load":
+                world.load();
+                break;
         }
-        
     }
+
+
 
 }
