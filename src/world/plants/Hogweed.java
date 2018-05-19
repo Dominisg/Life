@@ -43,9 +43,9 @@ public class Hogweed extends Plant{
         tmp.y-=2;
         kill(tmp);
         if(world instanceof WorldHex) {
-            tmp.x--;
+            tmp.x++;
             kill(tmp);
-            tmp.x+=2;
+            tmp.x-=2;
             tmp.y+=2;
             kill(tmp);
         }

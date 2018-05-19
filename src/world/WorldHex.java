@@ -1,7 +1,5 @@
 package world;
 
-import static java.lang.Math.sqrt;
-
 public class WorldHex extends World{
 
     public boolean createInNeighbour(Point point, Class type){
@@ -31,15 +29,15 @@ public class WorldHex extends World{
             addToQueue(type,tmp);
             return true;
         }
-        tmp.x--;
-        if((isThere(tmp)==null) && tmp.y>=0 && tmp.x>=0)
+        tmp.x++;
+        if((isThere(tmp)==null) && tmp.y>=0 && tmp.x<dimensions.x)
         {
             addToQueue(type,tmp);
             return true;
         }
         tmp.y+=2;
-        tmp.x+=2;
-        if((isThere(tmp)==null) && tmp.x<dimensions.x && tmp.y<dimensions.y)
+        tmp.x-=2;
+        if((isThere(tmp)==null) && tmp.x>=0 && tmp.y<dimensions.y)
         {
             addToQueue(type,tmp);
             return true;

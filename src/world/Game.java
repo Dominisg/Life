@@ -1,23 +1,18 @@
 package world;
-import world.animals.Human;
 import world.gui.*;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.util.Scanner;
 
-public class Game implements ActionListener {
+public class Game implements ActionListener{
     private World world;
-    GameScreen gs;
+    private GameScreen gs;
+
     public void setWorld(World w)
     {
         world=w;
     }
     public World getWorld(){return world;}
-
 
     public Game() {
         SwingUtilities.invokeLater(new Runnable() {
@@ -33,7 +28,6 @@ public class Game implements ActionListener {
         });
     }
 
-
     public void actionPerformed(ActionEvent ae)
     {
         switch(ae.getActionCommand()) {
@@ -46,6 +40,8 @@ public class Game implements ActionListener {
             case "Load":
                 world.load();
                 break;
+            case "Skill":
+                world.getHuman().activateSkill();
         }
     }
 

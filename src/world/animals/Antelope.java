@@ -2,7 +2,6 @@ package world.animals;
 
 import world.*;
 import world.Point;
-
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;

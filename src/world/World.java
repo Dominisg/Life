@@ -1,16 +1,17 @@
 package world;
-import com.sun.org.apache.xpath.internal.operations.String;
+
 import world.animals.Human;
 import world.gui.Commentator;
 import world.gui.GameScreen;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.*;
 import java.util.*;
 
-public abstract class World {
-
+public abstract class World implements KeyListener {
 
     final public Point screensize = new Point(600, 800);
     protected Point dimensions;
@@ -20,8 +21,10 @@ public abstract class World {
     private Vector<Organism> organisms = new Vector<>();
     private Vector<Organism> created_list = new Vector<Organism>();
     private Vector<Organism> destroy_list = new Vector<>();
+    private Human human;
 
     public abstract boolean createInNeighbour(Point point, Class type);
+
     abstract public Point getFieldsize();
 
     World(Point dim) {
@@ -40,6 +43,7 @@ public abstract class World {
     public Commentator getCommentator() {
         return commentator;
     }
+
     void setGamescreen(GameScreen gs) {
         gamescreen = gs;
     }
@@ -56,11 +60,11 @@ public abstract class World {
         return dimensions;
     }
 
-
+    public Human getHuman(){return human;}
 
     void createStartingBoard() {
         createOrganism(world.animals.Wolf.class);
-        //createOrganism(world.animals.Human.class);
+        createOrganism(world.animals.Human.class);
         createOrganism(world.animals.Sheep.class);
         createOrganism(world.animals.Sheep.class);
         createOrganism(world.animals.Turtle.class);
@@ -109,7 +113,6 @@ public abstract class World {
             bubbleOrganism();
         }
     }
-
 
     public void setOnBoard(Organism organism) {
         map[organism.getCords().x][organism.getCords().y] = organism;
@@ -202,6 +205,7 @@ public abstract class World {
         Organism organism = allocByType(type, cords);
         map[cords.x][cords.y] = organism;
         organisms.add(organism);
+        if (type == Human.class) human = (Human) organism;
         bubbleOrganism();
         return organism;
     }
@@ -263,6 +267,7 @@ public abstract class World {
             System.out.println(ex);
         }
     }
+
     void load() {
         commentator.clear();
         map = null;
@@ -298,6 +303,59 @@ public abstract class World {
             System.out.println(ex);
         }
         gamescreen.repaint();
+    }
+
+    @Override
+    public void keyPressed(KeyEvent keyEvent) {
+        if (this instanceof WorldGrid) {
+            switch (keyEvent.getKeyCode()) {
+                case KeyEvent.VK_UP:
+                    human.setDir(Direction.UP);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    human.setDir(Direction.DOWN);
+                    break;
+                case KeyEvent.VK_LEFT:
+                    human.setDir(Direction.LEFT);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    human.setDir(Direction.RIGHT);
+                    break;
+            }
+        } else {
+            switch (keyEvent.getKeyCode()) {
+                case KeyEvent.VK_W:
+                    human.setDir(Direction.UP);
+                    break;
+                case KeyEvent.VK_X:
+                    human.setDir(Direction.DOWN);
+                    break;
+                case KeyEvent.VK_A:
+                    human.setDir(Direction.LEFT);
+                    break;
+                case KeyEvent.VK_D:
+                    human.setDir(Direction.RIGHT);
+                    break;
+                case KeyEvent.VK_Z:
+                    human.setDir(Direction.HEXLEFT);
+                    break;
+                case KeyEvent.VK_E:
+                    human.setDir(Direction.HEXRIGHT);
+                    break;
+
+
+            }
+        }
+    }
+
+    @Override
+    public void keyTyped(KeyEvent keyEvent) {
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent keyEvent) {
+
     }
 }
 

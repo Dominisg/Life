@@ -63,7 +63,8 @@ public class Fox extends Animal {
 
     private boolean canGoDir(Direction dir) {
         world.Point tmp = new world.Point(cords);
-        dir.translate(tmp);
+        if(world instanceof WorldHex)dir.translateHex(tmp);
+        else dir.translate(tmp);
         if (world.isThere(tmp) == null || world.isThere(tmp).getStrenght() <= strenght) {
             return tmp.x < world.getDimensions().x && tmp.x >= 0 && tmp.y < world.getDimensions().y && tmp.y >= 0;
         }
