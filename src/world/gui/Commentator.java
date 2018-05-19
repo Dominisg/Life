@@ -50,6 +50,14 @@ public class Commentator {
                 log.append(organism.getClass().getSimpleName() + "("+
                         organism.getCords().x+","+organism.getCords().y+") moved left.\n");
                 break;
+            case HEXLEFT:
+                log.append(organism.getClass().getSimpleName() + "("+
+                        organism.getCords().x+","+organism.getCords().y+") moved hexleft(-1,-1).\n");
+                break;
+            case HEXRIGHT:
+                log.append(organism.getClass().getSimpleName() + "("+
+                        organism.getCords().x+","+organism.getCords().y+") moved hexright(1,1).\n");
+                break;
         }
     }
 

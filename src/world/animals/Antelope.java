@@ -1,9 +1,7 @@
 package world.animals;
 
-import world.Direction;
-import world.Organism;
+import world.*;
 import world.Point;
-import world.WorldGrid;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -29,11 +27,19 @@ public class Antelope extends Animal {
         Direction dir;
 
         do {
-            dir = Direction.randomDirection();
+            if(world instanceof WorldHex)
+                dir = Direction.randomDirectionHex();
+            else
+                dir = Direction.randomDirection();
+
         } while(!willBeIn(dir));
         move(dir);
         do {
-            dir = Direction.randomDirection();
+
+            if(world instanceof WorldHex)
+                dir = Direction.randomDirectionHex();
+            else
+                dir = Direction.randomDirection();
         } while(!willBeIn(dir));
         Organism collision_target = move(dir);
         if(cords.x==last_cords.x && cords.y == last_cords.y)
@@ -81,6 +87,22 @@ public class Antelope extends Animal {
                         return true;
                     } else goBack(tmp);
                 }
+                if(world instanceof WorldHex)
+                {
+                    if (willBeIn(Direction.HEXLEFT)) {
+                        if (move(Direction.HEXLEFT) == null) {
+                            world.setOnBoard(this);
+                            return true;
+                        } else goBack(tmp);
+                    }
+                    if (willBeIn(Direction.HEXRIGHT)) {
+                        if (move(Direction.HEXRIGHT) == null) {
+                            world.setOnBoard(this);
+                            return true;
+                        } else goBack(tmp);
+                    }
+                }
+
                 world.setOnBoard(this);
             }
         }

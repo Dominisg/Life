@@ -2,6 +2,7 @@ package world.plants;
 
 import world.Organism;
 import world.Point;
+import world.WorldHex;
 import world.animals.Animal;
 
 import javax.imageio.ImageIO;
@@ -41,6 +42,13 @@ public class Hogweed extends Plant{
         kill(tmp);
         tmp.y-=2;
         kill(tmp);
+        if(world instanceof WorldHex) {
+            tmp.x--;
+            kill(tmp);
+            tmp.x+=2;
+            tmp.y+=2;
+            kill(tmp);
+        }
         super.action();
     }
 

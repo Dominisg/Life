@@ -1,6 +1,7 @@
 package world.plants;
 
 import world.Organism;
+import world.WorldGrid;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -14,6 +15,7 @@ public class Deadlyshade extends Plant {
         try {
             BufferedImage tmp = ImageIO.read(new File("src/world/plants/graphics/deadlyshade.png"));
             image = tmp.getScaledInstance(world.getFieldsize().x, world.getFieldsize().y, Image.SCALE_FAST);
+
         } catch (IOException ex) {
             System.out.println(ex);
         }

@@ -1,9 +1,13 @@
 package world;
+import world.animals.Human;
 import world.gui.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
+import java.util.Scanner;
 
 public class Game implements ActionListener {
     private World world;
@@ -44,7 +48,5 @@ public class Game implements ActionListener {
                 break;
         }
     }
-
-
 
 }

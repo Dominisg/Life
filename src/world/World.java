@@ -12,16 +12,17 @@ import java.util.*;
 public abstract class World {
 
 
-    final private Point screensize = new Point(600, 800);
+    final public Point screensize = new Point(600, 800);
+    protected Point dimensions;
     private Commentator commentator;
     private Organism[][] map;
-    protected Point dimensions;
     private GameScreen gamescreen;
     private Vector<Organism> organisms = new Vector<>();
     private Vector<Organism> created_list = new Vector<Organism>();
     private Vector<Organism> destroy_list = new Vector<>();
 
     public abstract boolean createInNeighbour(Point point, Class type);
+    abstract public Point getFieldsize();
 
     World(Point dim) {
         map = new Organism[dim.x][dim.y];
@@ -39,11 +40,9 @@ public abstract class World {
     public Commentator getCommentator() {
         return commentator;
     }
-
     void setGamescreen(GameScreen gs) {
         gamescreen = gs;
     }
-
 
     void setCommentator(Commentator c) {
         commentator = c;
@@ -57,10 +56,7 @@ public abstract class World {
         return dimensions;
     }
 
-    public Point getFieldsize() {
-        return new Point(screensize.x / dimensions.x, (screensize.y - 200) / dimensions.y);
 
-    }
 
     void createStartingBoard() {
         createOrganism(world.animals.Wolf.class);
@@ -267,15 +263,12 @@ public abstract class World {
             System.out.println(ex);
         }
     }
-
     void load() {
         commentator.clear();
         map = null;
-        //commentator=null
         organisms.clear();
         created_list.clear();
         destroy_list.clear();
-
         JFileChooser jf = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter("*.txt", "txt", "text");
         jf.setFileFilter(filter);
@@ -287,7 +280,6 @@ public abstract class World {
             dimensions.x = in.nextInt();
             dimensions.y = in.nextInt();
             map = new Organism[dimensions.x][dimensions.y];
-
             while (true) {
                 Class type;
                 Point cords = new Point();

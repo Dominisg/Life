@@ -1,6 +1,5 @@
 package world.animals;
-import world.Direction;
-import world.Organism;
+import world.*;
 import world.Point;
 
 import javax.imageio.ImageIO;
@@ -41,6 +40,10 @@ public class Fox extends Animal {
         sowhere[Direction.LEFT.ordinal()] = canGoDir(Direction.LEFT);
         sowhere[Direction.UP.ordinal()] = canGoDir(Direction.UP);
         sowhere[Direction.DOWN.ordinal()] = canGoDir(Direction.DOWN);
+        if(world instanceof WorldHex) {
+            sowhere[Direction.HEXRIGHT.ordinal()] = canGoDir(Direction.HEXRIGHT);
+            sowhere[Direction.HEXLEFT.ordinal()] = canGoDir(Direction.HEXLEFT);
+        }
 
         int suma = 0;
         for (boolean where : sowhere) {
@@ -50,7 +53,10 @@ public class Fox extends Animal {
         if (suma == 0) return null;
 
         while (true) {
-            suma = gen.nextInt(4);
+            if(world instanceof WorldGrid)
+                suma = gen.nextInt(4);
+            else
+                suma = gen.nextInt(6);
             if (sowhere[suma]) return Direction.getDir(suma);
         }
     }

@@ -35,4 +35,7 @@ public class WorldGrid extends World {
         }
         return false;
     }
+    public Point getFieldsize() {
+        return new Point(screensize.x / dimensions.x, (screensize.y - 200) / dimensions.y);
+    }
 }

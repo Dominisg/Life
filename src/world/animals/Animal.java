@@ -4,8 +4,6 @@ import world.Direction;
 import world.Point;
 import world.WorldGrid;
 
-import java.awt.*;
-import java.util.Random;
 
 public abstract class Animal extends Organism {
 
@@ -22,7 +20,8 @@ public abstract class Animal extends Organism {
         world.Point last_cords = new Point( cords);
         Direction dir;
         do {
-            dir = Direction.randomDirection();
+            if(world instanceof WorldGrid) dir = Direction.randomDirection();
+            else dir = Direction.randomDirectionHex();
         } while (!willBeIn(dir));
         world.getCommentator().commentMovement(this,dir);
         Organism collision_target = move(dir);

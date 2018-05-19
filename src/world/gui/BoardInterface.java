@@ -11,8 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import static com.sun.java.accessibility.util.AWTEventMonitor.addActionListener;
+import static java.lang.Math.sqrt;
 
 public class BoardInterface extends JPanel {
 
@@ -20,30 +19,43 @@ public class BoardInterface extends JPanel {
     private world.Point windowsize;
     private world.World world;
 
-
      BoardInterface(World w, world.Point dim, world.Point ws) {
          world = w;
          dimensions = dim;
          windowsize = ws;
          windowsize.y -= 200;
          addMouseListener(new MouseAdapter() {
-
              @Override
              public void mouseClicked(MouseEvent e) {
                  world.Point mouse = new world.Point(e.getX(), e.getY());
                  if(world instanceof WorldGrid) {
+
                      world.Point cords = new world.Point(mouse.x / (windowsize.x / dimensions.x), mouse.y / (windowsize.y / dimensions.y));
                      if (world.getOrganism(cords) == null) new AnimalFactory(BoardInterface.this, cords, mouse);
+                 }
+                 else
+                 {
+                     int dim;
+                     dim = dimensions.x > dimensions.y  ? dimensions.x : dimensions.y;
+                     dim++;
+                     //znajdowanie y z przesunieciem o 2a-h
+                     int translation=(int)((windowsize.x / dim) *0.16);
+                     world.Point result = new world.Point(0,(int)((mouse.y - translation) / ((windowsize.x / dim)/sqrt(3) + (windowsize.x / dim) *0.33)));
+                     //result.y=(mouse.y +translation) / (windowsize.x / dim);
+
+                     if (result.y%2 == 0) result.x =mouse.x / (windowsize.x / dim);
+                     else result.x = (mouse.x - windowsize.x / dim/2)/ ((windowsize.x / dim));
+                     if(result.x<dimensions.x && result.y<dimensions.y && result.x>=0 && result.y>=0 ) {
+                         if (world.getOrganism(result) == null) new AnimalFactory(BoardInterface.this, result, mouse);
+                     }
                  }
              }
          });
      }
-
     @Override
     public java.awt.Dimension getPreferredSize() {
         return new java.awt.Dimension(600, 600);
     }
-
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -59,12 +71,26 @@ public class BoardInterface extends JPanel {
             g.drawLine(windowsize.x - 1, 0, windowsize.y, windowsize.x - 1);
             g.drawLine(0, windowsize.y, windowsize.x, windowsize.y);
         }
+        else
+        {
+            int dim;
+           dim = dimensions.x > dimensions.y  ? dimensions.x : dimensions.y;
+           dim++;
+            g.setColor(new Color(112, 128, 144, 125));
+            for(int j =1; j<=dimensions.y;j++) {
+                for (int i = 1; i <= dimensions.x * 2; i += 2) {
+                    if(j%2==1)
+                        g.fillPolygon(getHexagon(i * ((windowsize.x  / (dim)) / 2),((windowsize.x / dim) + ((j-1)*(int)(3*(windowsize.x / dim)/2 / sqrt(3)))), (int)((windowsize.x / dim) / sqrt(3))));
+                    else
+                        g.fillPolygon(getHexagon((i * ((windowsize.x / (dim )) / 2)+(windowsize.x / (dim) / 2)),((windowsize.x / dim)+ ((j-1)*(int)(3*(windowsize.x / dim)/2 / sqrt(3)))), (int)((windowsize.x / dim) / sqrt(3))));
+                }
+            }
+        }
 
         for(Organism organism : world.getOrganisms())
         {
             organism.draw(g);
         }
-
     }
 
     private class AnimalFactory extends JPopupMenu implements ActionListener {
@@ -104,10 +130,7 @@ public class BoardInterface extends JPanel {
             add(guarana);
             show(jpanel,mouse.x,mouse.y);
             setVisible(true);
-
-
         }
-
 
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
@@ -147,4 +170,16 @@ public class BoardInterface extends JPanel {
         }
     }
 
+    Polygon getHexagon(int x, int y, int a)
+    {
+        Polygon hexagon = new Polygon();
+        a-=2;
+        double b;
+        for (int i=0; i < 7; i++)
+        {
+            b = Math.PI / 3.0 * i;
+            hexagon.addPoint((int)(Math.round(x + Math.sin(b) * a)), (int)(Math.round(y + Math.cos(b) * a)));
+        }
+        return hexagon;
+    }
 }

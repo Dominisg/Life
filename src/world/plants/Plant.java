@@ -24,7 +24,6 @@ public abstract class Plant extends Organism {
                 world.getCommentator().commentSpreading(this);
                 return true;
             }
-
         }
         return false;
     }
