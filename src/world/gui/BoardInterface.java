@@ -69,7 +69,7 @@ public class BoardInterface extends JPanel {
             for (int i = 0; i < windowsize.y; i += 2 * windowsize.y / dimensions.y) {
                 g.fillRect(0, i, windowsize.x, windowsize.y / dimensions.y);
             }
-            g.drawLine(windowsize.x - 1, 0, windowsize.y, windowsize.x - 1);
+            g.drawLine(windowsize.x - 1, 0, windowsize.x, windowsize.y - 1);
             g.drawLine(0, windowsize.y, windowsize.x, windowsize.y);
         } else {
             int dim;

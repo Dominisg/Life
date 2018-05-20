@@ -2,6 +2,7 @@ package world.plants;
 
 import world.Organism;
 import world.Point;
+import world.WorldGrid;
 import world.WorldHex;
 import world.animals.Animal;
 
@@ -33,21 +34,36 @@ public class Hogweed extends Plant{
     @Override
     public void action() {
         Point tmp = new Point(cords);
-        tmp.x++;
-        kill(tmp);
-        tmp.x-=2;
-        kill(tmp);
-        tmp.x++;
-        tmp.y++;
-        kill(tmp);
-        tmp.y-=2;
-        kill(tmp);
-        if(world instanceof WorldHex) {
             tmp.x++;
             kill(tmp);
-            tmp.x-=2;
-            tmp.y+=2;
+            tmp.x -= 2;
             kill(tmp);
+        if(world instanceof WorldGrid) {
+            tmp.x++;
+            tmp.y++;
+            kill(tmp);
+            tmp.y -= 2;
+            kill(tmp);
+        }
+        else
+            {
+                if(tmp.y%2==1) {
+                    tmp.x++;
+                    tmp.y--;
+                    kill(tmp);
+                }
+                else {
+                    tmp.y--;
+                    kill(tmp);
+                }
+                tmp.y += 2;
+                tmp.x++;
+                kill(tmp);
+                tmp.y -= 2;
+                kill(tmp);
+                tmp.x--;
+                tmp.y+=2;
+                kill(tmp);
         }
         super.action();
     }
