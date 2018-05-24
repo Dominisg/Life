@@ -34,7 +34,7 @@ public class GameScreen extends JFrame {
         if (game.getWorld() == null) System.exit(0);
         setSize(size.x + 40, size.y + 40);
 
-        setTitle("Life");
+        setTitle("Life - Dominik Grzegorzek 172167");
         setLayout(new java.awt.FlowLayout());
         JButton skill = new JButton("Skill");
         dir = new JLabel("");

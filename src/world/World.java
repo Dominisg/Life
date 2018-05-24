@@ -63,18 +63,20 @@ public abstract class World implements KeyListener {
     public Human getHuman(){return human;}
 
     void createStartingBoard() {
-        createOrganism(world.animals.Wolf.class);
         createOrganism(world.animals.Human.class);
-        createOrganism(world.animals.Sheep.class);
-        createOrganism(world.animals.Sheep.class);
-        createOrganism(world.animals.Turtle.class);
-        createOrganism(world.animals.Antelope.class);
-        createOrganism(world.animals.Fox.class);
-        createOrganism(world.plants.Guarana.class);
-        createOrganism(world.plants.Hogweed.class);
-        createOrganism(world.plants.Grass.class);
-        createOrganism(world.plants.Deadlyshade.class);
-        createOrganism(world.plants.Dendelion.class);
+        if (dimensions.x >5 && dimensions.y>5) {
+            createOrganism(world.animals.Wolf.class);
+            createOrganism(world.animals.Sheep.class);
+            createOrganism(world.animals.Sheep.class);
+            createOrganism(world.animals.Turtle.class);
+            createOrganism(world.animals.Antelope.class);
+            createOrganism(world.animals.Fox.class);
+            createOrganism(world.plants.Guarana.class);
+            createOrganism(world.plants.Hogweed.class);
+            createOrganism(world.plants.Grass.class);
+            createOrganism(world.plants.Deadlyshade.class);
+            createOrganism(world.plants.Dendelion.class);
+        }
     }
 
     void performRound() {

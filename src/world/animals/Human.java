@@ -64,7 +64,10 @@ public class Human extends Animal{
          }
         if (world.checkIfAlive(this)) world.setOnBoard(this);
         cooldown--;
-        if(cooldown<=0)skill_is_active=false;
+        if(cooldown<=0) {
+            skill_is_active = false;
+            info.setText("You can't use your skill!");
+        }
         if(cooldown<=-5)info.setText("You are able to use skill");
     }
 

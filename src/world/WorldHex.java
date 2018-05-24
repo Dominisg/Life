@@ -50,6 +50,6 @@ public class WorldHex extends World{
     public Point getFieldsize() {
 
         int dim = dimensions.x > dimensions.y  ? dimensions.x : dimensions.y;
-        return new Point((int)(screensize.x / dim / 1.2), (int)(screensize.x /dim/1.2));
+        return new Point((int)(screensize.x / dim / 1.3), (int)(screensize.x /dim/1.2));
     }
 }
